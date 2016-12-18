@@ -10,6 +10,7 @@ import numpy as np
 __author__ = 'ishii0514'
 
 from vectorizer import vect
+from update import update_model
 
 app = Flask(__name__)
 
@@ -65,7 +66,7 @@ def feedback():
     review = request.form['review']
     prediction = request.form['prediction']
 
-    inv_label = {'negativ': 0, 'positive': 1}
+    inv_label = {'negative': 0, 'positive': 1}
     y = inv_label[prediction]
     if feedback == 'Incorrect':
         y = int(not(y))
@@ -75,4 +76,5 @@ def feedback():
 
 
 if __name__ == '__main__':
+    clf = update_model(db_path=db, model=clf, batch_size=10000)
     app.run(debug=True)
